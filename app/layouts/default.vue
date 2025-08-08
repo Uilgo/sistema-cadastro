@@ -1,10 +1,19 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-background-base text-text-base">
-    <Header />
-    <main class="flex-1 p-6">
-      <slot />
+  <div
+    class="h-screen flex flex-col bg-background-base text-text-base overflow-hidden"
+  >
+    <!-- Header fixo -->
+    <Header class="flex-shrink-0" />
+
+    <!-- Conteúdo principal com scroll -->
+    <main class="flex-1 overflow-y-auto">
+      <div class="p-6">
+        <slot />
+      </div>
     </main>
-    <Footer />
+
+    <!-- Footer fixo -->
+    <Footer class="flex-shrink-0" />
   </div>
 </template>
 

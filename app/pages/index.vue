@@ -1,13 +1,32 @@
 <template>
   <DashboardLayout>
-    <DashboardHeader
-      :user="user"
-      :loading="authLoading"
-      @logout="handleLogout"
-    />
+    <!-- Header simples -->
+    <div
+      class="bg-background-surface rounded-xl shadow-xl px-6 py-5 border border-border-subtle mb-6"
+    >
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-text-base mb-1">Dashboard</h1>
+          <p class="text-text-muted text-sm" v-if="user">
+            Bem-vindo,
+            <span class="text-brand-primary font-semibold">{{
+              user.email
+            }}</span>
+          </p>
+        </div>
+        <BaseButton
+          variant="outline"
+          @click="handleLogout"
+          :disabled="authLoading"
+          size="sm"
+        >
+          <span v-if="authLoading">Saindo...</span>
+          <span v-else>Logout</span>
+        </BaseButton>
+      </div>
+    </div>
 
-    <DashboardGrid :user="user" :session="session" />
-
+    <!-- Tabela de funcionários -->
     <FuncionariosTable
       :funcionarios="funcionarios"
       :loading="funcionariosLoading"
@@ -15,7 +34,13 @@
       @refresh="handleRefreshFuncionarios"
     />
 
-    <ErrorAlert :error="logoutError" />
+    <!-- Mensagem de erro do logout -->
+    <div
+      v-if="logoutError"
+      class="mt-6 bg-semantic-error/10 border border-semantic-error text-semantic-error px-4 py-3 rounded-lg"
+    >
+      {{ logoutError }}
+    </div>
   </DashboardLayout>
 </template>
 

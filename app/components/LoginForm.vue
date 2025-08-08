@@ -1,22 +1,22 @@
 <template>
   <div
-    class="w-full max-w-md mx-auto bg-gray-800 rounded-xl shadow-2xl p-8 border border-gray-700"
+    class="w-full max-w-md mx-auto bg-background-surface rounded-xl shadow-2xl p-8 border border-border-subtle"
   >
     <!-- Tabs -->
-    <div class="flex mb-8 border-b border-gray-700">
+    <div class="flex mb-8 border-b border-border-subtle">
       <button
         @click="activeTab = 'login'"
         :class="[
           'flex-1 py-3 px-4 text-center font-semibold transition-all duration-200 relative cursor-pointer',
           activeTab === 'login'
-            ? 'text-orange-500'
-            : 'text-gray-400 hover:text-white',
+            ? 'text-brand-primary'
+            : 'text-text-muted hover:text-text-base',
         ]"
       >
         Entrar
         <div
           v-if="activeTab === 'login'"
-          class="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
+          class="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full"
         />
       </button>
       <button
@@ -24,14 +24,14 @@
         :class="[
           'flex-1 py-3 px-4 text-center font-semibold transition-all duration-200 relative cursor-pointer',
           activeTab === 'register'
-            ? 'text-orange-500'
-            : 'text-gray-400 hover:text-white',
+            ? 'text-brand-primary'
+            : 'text-text-muted hover:text-text-base',
         ]"
       >
         Cadastrar
         <div
           v-if="activeTab === 'register'"
-          class="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
+          class="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full"
         />
       </button>
     </div>
@@ -41,7 +41,7 @@
       <!-- Mensagem de erro -->
       <div
         v-if="loginError"
-        class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm"
+        class="bg-semantic-error/10 border border-semantic-error text-semantic-error px-4 py-3 rounded-lg text-sm"
       >
         {{ loginError }}
       </div>
@@ -49,7 +49,7 @@
       <!-- Mensagem de sucesso -->
       <div
         v-if="loginSuccess"
-        class="bg-green-900/50 border border-green-500 text-green-200 px-4 py-3 rounded-lg text-sm"
+        class="bg-semantic-success/10 border border-semantic-success text-semantic-success px-4 py-3 rounded-lg text-sm"
       >
         Login realizado com sucesso! Redirecionando...
       </div>
@@ -61,12 +61,14 @@
           type="email"
           label="Email"
           placeholder="Digite seu email"
-          :class="{ 'border-red-500': hasFieldError('email', loginValidation) }"
+          :class="{
+            'border-semantic-error': hasFieldError('email', loginValidation),
+          }"
         />
         <!-- Erros específicos do campo email -->
         <div
           v-if="hasFieldError('email', loginValidation)"
-          class="mt-1 text-sm text-red-400"
+          class="mt-1 text-sm text-semantic-error"
         >
           <div
             v-for="error in getFieldErrors('email', loginValidation)"
@@ -93,13 +95,13 @@
           label="Senha"
           placeholder="Digite sua senha"
           :class="{
-            'border-red-500': hasFieldError('password', loginValidation),
+            'border-semantic-error': hasFieldError('password', loginValidation),
           }"
         />
         <!-- Erros específicos do campo senha -->
         <div
           v-if="hasFieldError('password', loginValidation)"
-          class="mt-1 text-sm text-red-400"
+          class="mt-1 text-sm text-semantic-error"
         >
           <div
             v-for="error in getFieldErrors('password', loginValidation)"
@@ -138,7 +140,7 @@
       <!-- Mensagem de erro do registro -->
       <div
         v-if="registerError"
-        class="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm"
+        class="bg-semantic-error/10 border border-semantic-error text-semantic-error px-4 py-3 rounded-lg text-sm"
       >
         {{ registerError }}
       </div>
@@ -146,7 +148,7 @@
       <!-- Mensagem de sucesso do registro -->
       <div
         v-if="registerSuccess"
-        class="bg-green-900/50 border border-green-500 text-green-200 px-4 py-3 rounded-lg text-sm"
+        class="bg-semantic-success/10 border border-semantic-success text-semantic-success px-4 py-3 rounded-lg text-sm"
       >
         Conta criada com sucesso! Redirecionando...
       </div>
@@ -159,13 +161,13 @@
           label="Email"
           placeholder="Digite seu email"
           :class="{
-            'border-red-500': hasFieldError('email', registerValidation),
+            'border-semantic-error': hasFieldError('email', registerValidation),
           }"
         />
         <!-- Erros específicos do campo email -->
         <div
           v-if="hasFieldError('email', registerValidation)"
-          class="mt-1 text-sm text-red-400"
+          class="mt-1 text-sm text-semantic-error"
         >
           <div
             v-for="error in getFieldErrors('email', registerValidation)"
@@ -192,13 +194,16 @@
           label="Senha"
           placeholder="Digite sua senha"
           :class="{
-            'border-red-500': hasFieldError('password', registerValidation),
+            'border-semantic-error': hasFieldError(
+              'password',
+              registerValidation
+            ),
           }"
         />
         <!-- Erros específicos do campo senha -->
         <div
           v-if="hasFieldError('password', registerValidation)"
-          class="mt-1 text-sm text-red-400"
+          class="mt-1 text-sm text-semantic-error"
         >
           <div
             v-for="error in getFieldErrors('password', registerValidation)"
@@ -225,7 +230,7 @@
           label="Confirmar Senha"
           placeholder="Confirme sua senha"
           :class="{
-            'border-red-500': hasFieldError(
+            'border-semantic-error': hasFieldError(
               'confirmPassword',
               registerValidation
             ),
@@ -234,7 +239,7 @@
         <!-- Erros específicos do campo confirmação de senha -->
         <div
           v-if="hasFieldError('confirmPassword', registerValidation)"
-          class="mt-1 text-sm text-red-400"
+          class="mt-1 text-sm text-semantic-error"
         >
           <div
             v-for="error in getFieldErrors(

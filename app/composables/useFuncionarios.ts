@@ -1,5 +1,9 @@
 import { ref, readonly } from "vue";
-import type { Funcionario, FuncionariosResponse } from "../types/funcionarios";
+import type {
+  Funcionario,
+  FuncionariosResponse,
+  FuncionarioInsert,
+} from "../types/funcionarios";
 
 // Estado reativo global
 const funcionarios = ref<Funcionario[]>([]);
@@ -44,6 +48,49 @@ export const useFuncionarios = () => {
     }
   };
 
+  // Inserir novo funcionário
+  const insertFuncionario = async (
+    funcionarioData: FuncionarioInsert
+  ): Promise<FuncionariosResponse> => {
+    try {
+      loading.value = true;
+      error.value = null;
+
+      const { $supabase } = useNuxtApp();
+
+      const { data, error: supabaseError } = await $supabase
+        .from("funcionarios")
+        .insert([funcionarioData])
+        .select()
+        .single();
+
+      if (supabaseError) {
+        throw supabaseError;
+      }
+
+      // Adicionar o novo funcionário à lista local
+      if (data) {
+        funcionarios.value.unshift(data);
+      }
+
+      return {
+        success: true,
+        data: data ? [data] : [],
+      };
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro ao cadastrar funcionário";
+      error.value = errorMessage;
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     // Estado
     funcionarios: readonly(funcionarios),
@@ -52,5 +99,6 @@ export const useFuncionarios = () => {
 
     // Métodos
     fetchFuncionarios,
+    insertFuncionario,
   };
 };

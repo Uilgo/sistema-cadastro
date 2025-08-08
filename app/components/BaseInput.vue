@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-1">
-    <label v-if="label" :for="id" class="text-gray-300 text-sm font-medium">
+    <label v-if="label" :for="id" class="text-text-base text-sm font-medium">
       {{ label }}
     </label>
     <div class="relative">
@@ -11,7 +11,7 @@
         :disabled="disabled"
         :value="modelValue"
         @input="onInput"
-        class="w-full bg-gray-700 border border-gray-600 text-white px-3 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 placeholder:text-gray-400"
+        class="w-full bg-background-surface border border-border-subtle text-text-base px-3 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 placeholder:text-text-muted"
         :class="{ 'pr-10': type === 'password' }"
       />
 
@@ -20,7 +20,7 @@
         v-if="type === 'password'"
         type="button"
         @click="togglePasswordVisibility"
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors cursor-pointer"
+        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-muted hover:text-text-base transition-colors cursor-pointer"
       >
         <EyeSlashIcon v-if="showPassword" class="w-5 h-5" />
         <EyeIcon v-else class="w-5 h-5" />

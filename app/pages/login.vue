@@ -1,11 +1,11 @@
 <template>
   <div
-    class="h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4 overflow-hidden"
+    class="h-screen bg-gradient-to-br from-background-base to-background-elevated flex items-center justify-center p-4 overflow-hidden"
   >
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Bem-vindo</h1>
-        <p class="text-gray-300">Entre na sua conta ou crie uma nova</p>
+        <h1 class="text-3xl font-bold text-text-base mb-2">Bem-vindo</h1>
+        <p class="text-text-muted">Entre na sua conta ou crie uma nova</p>
       </div>
 
       <LoginForm />

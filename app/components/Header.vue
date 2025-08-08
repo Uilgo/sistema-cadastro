@@ -25,6 +25,13 @@
             Início
           </NuxtLink>
           <NuxtLink
+            to="/novoCadastro"
+            class="flex items-center gap-2 px-3 py-2 rounded-lg text-text-base hover:bg-background-elevated hover:text-brand-primary transition-all duration-200"
+          >
+            <UserPlusIcon class="w-4 h-4" />
+            Novo Cadastro
+          </NuxtLink>
+          <NuxtLink
             to="/login"
             class="flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-primaryHover text-text-onAccent rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg"
           >
@@ -42,5 +49,6 @@ import {
   BuildingOfficeIcon,
   HomeIcon,
   ArrowRightOnRectangleIcon,
+  UserPlusIcon,
 } from "@heroicons/vue/24/outline";
 </script>
