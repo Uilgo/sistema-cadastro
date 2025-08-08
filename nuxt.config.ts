@@ -16,4 +16,16 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_KEY,
     },
   },
+  // Configuração explícita para auto-imports após reorganização
+  imports: {
+    dirs: ["composables/**", "utils/**"],
+  },
+  components: {
+    dirs: [
+      {
+        path: "~/components",
+        pathPrefix: false,
+      },
+    ],
+  },
 });

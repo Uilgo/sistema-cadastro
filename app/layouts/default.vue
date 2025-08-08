@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+// Os componentes serão auto-importados pelo Nuxt
+// Header -> components/layout/Header.vue
+// Footer -> components/layout/Footer.vue
 </script>

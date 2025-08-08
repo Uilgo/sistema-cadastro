@@ -1,10 +1,10 @@
+/* Toast styles - deve vir antes de tudo */
+@import "./toast.css";
+
 /* Tailwind CSS directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Toast styles */
-@import "./toast.css";
 
 /* Custom styles */
 @layer base {

@@ -14,6 +14,7 @@
           type="text"
           placeholder="Digite o nome completo"
           required
+          :disabled="readonly"
           :class="{ 'border-semantic-error': hasFieldError('nome') }"
           @blur="handleFieldBlur('nome')"
         />
@@ -51,6 +52,7 @@
           v-model="form.cargo"
           :options="cargoOptions"
           placeholder="Selecione um cargo"
+          :disabled="readonly"
           :button-class="hasFieldError('cargo') ? 'border-semantic-error' : ''"
           @update:model-value="handleCargoChange"
         />
@@ -90,6 +92,7 @@
           type="text"
           placeholder="Digite o endereço completo"
           required
+          :disabled="readonly"
           :class="{ 'border-semantic-error': hasFieldError('endereco') }"
           @blur="handleFieldBlur('endereco')"
         />
@@ -129,6 +132,7 @@
           type="email"
           placeholder="Digite o email"
           required
+          :disabled="readonly"
           :class="{ 'border-semantic-error': hasFieldError('email') }"
           @blur="handleFieldBlur('email')"
         />
@@ -169,6 +173,7 @@
           step="0.01"
           placeholder="Digite o salário (ex: 5000.00)"
           required
+          :disabled="readonly"
           :class="{ 'border-semantic-error': hasFieldError('salario') }"
           @blur="handleFieldBlur('salario')"
         />
@@ -194,11 +199,11 @@
         </div>
       </div>
 
-      <!-- Botão de Ação -->
-      <div class="flex justify-end pt-4">
+      <!-- Botão de Ação (apenas se não for readonly) -->
+      <div v-if="!readonly" class="flex justify-end pt-4">
         <BaseButton type="submit" :disabled="loading" class="min-w-32">
           <span v-if="loading">Salvando...</span>
-          <span v-else>{{ isNovo ? "Salvar" : "Editar" }}</span>
+          <span v-else">{{ isNovo ? "Salvar" : "Editar" }}</span>
         </BaseButton>
       </div>
     </form>
@@ -208,6 +213,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type {
+  Funcionario,
   FuncionarioInsert,
   FormValidation,
   ValidationResult,
@@ -221,14 +227,18 @@ import {
 // Props
 interface Props {
   isNovo?: boolean;
+  funcionario?: Funcionario | null;
+  readonly?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   isNovo: true,
+  funcionario: null,
+  readonly: false,
 });
 
 // Composables
-const { insertFuncionario } = useFuncionarios();
+const { insertFuncionario, updateFuncionario } = useFuncionarios();
 
 // Estado do formulário (usando strings para compatibilidade com BaseInput)
 const form = ref({
@@ -242,6 +252,23 @@ const form = ref({
 const loading = ref(false);
 const errors = ref<{ [key: string]: string[] }>({});
 const isValidating = ref(false);
+
+// Popular formulário com dados do funcionário (se fornecido)
+watch(
+  () => props.funcionario,
+  (funcionario) => {
+    if (funcionario) {
+      form.value = {
+        nome: funcionario.nome || "",
+        cargo: funcionario.cargo || "",
+        endereco: funcionario.endereco || "",
+        email: funcionario.email || "",
+        salario: funcionario.salario ? funcionario.salario.toString() : "",
+      };
+    }
+  },
+  { immediate: true }
+);
 
 // Opções de cargo para o dropdown
 const cargoOptions = [
@@ -410,8 +437,21 @@ const handleSubmit = async () => {
         throw new Error(result.error || "Erro ao cadastrar funcionário");
       }
     } else {
-      // TODO: Implementar lógica de edição
-      toast.info("Funcionalidade de edição será implementada em breve");
+      // Editar funcionário existente no Supabase
+      if (!props.funcionario?.id) {
+        throw new Error("ID do funcionário não encontrado para edição");
+      }
+
+      const result = await updateFuncionario(props.funcionario.id, funcionarioData);
+
+      if (result.success) {
+        toast.success("Funcionário atualizado com sucesso!");
+        
+        // Navegar para a página inicial com dados atualizados
+        await navigateTo("/");
+      } else {
+        throw new Error(result.error || "Erro ao atualizar funcionário");
+      }
     }
   } catch (error) {
     console.error("Erro ao processar formulário:", error);
